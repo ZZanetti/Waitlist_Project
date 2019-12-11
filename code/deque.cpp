@@ -1,9 +1,10 @@
 #include "deque.h"
 
+
 Deque::Deque(){
     size = 0;
-    head = std::shared_ptr<student>(NULL);
-    tail = std::shared_ptr<student>(NULL);
+    head = std::shared_ptr<node>(NULL);
+    tail = std::shared_ptr<node>(NULL);
 
 }
 Deque::~Deque(){
@@ -14,32 +15,32 @@ int Deque::return_size(){
     return size;
 }
 
-std::shared_ptr<student> Deque::init_stud(std::string name, std::string email, std::string address){
-        std::shared_ptr<student> ret(new student);
-        ret->prev = std::shared_ptr<student>(NULL);
-        ret->next = std::shared_ptr<student>(NULL);
-        ret->name = name;
-        ret->email = email;
-        ret->address = address;
+std::shared_ptr<node> Deque::init_node(std::string string1, std::string string2, std::string string3){
+        std::shared_ptr<node> ret(new node);
+        ret->prev = std::shared_ptr<node>(NULL);
+        ret->next = std::shared_ptr<node>(NULL);
+        ret->stored_string_1 = string1;
+        ret->stored_string_2 = string2;
+        ret->stored_string_3 = string3;
         return ret;
 
 
 }
 
-void Deque::add_student_deque(std::shared_ptr<student> stud){
+void Deque::add_node_deque(std::shared_ptr<node> deque_node){
     
     if (head == nullptr)
     {
-        head = stud;
+        head = deque_node;
         size++;
-        tail = stud;
+        tail = deque_node;
         return;
     }
     else
     {
-        tail->next = stud;
-        stud->prev = tail;
-        tail = stud;
+        tail->next = deque_node;
+        deque_node->prev = tail;
+        tail = deque_node;
         size++;
     }
     
@@ -47,13 +48,13 @@ void Deque::add_student_deque(std::shared_ptr<student> stud){
 
 }
 
-std::shared_ptr<student> Deque::pop_top(){
+std::shared_ptr<node> Deque::pop_top(){
     if (head == nullptr)
     {
         return nullptr;
     }
     
-    std::shared_ptr<student> temp_ptr = head;
+    std::shared_ptr<node> temp_ptr = head;
     set_head(head->next);
     if (head != nullptr)
     {
@@ -66,18 +67,18 @@ std::shared_ptr<student> Deque::pop_top(){
 
 }
 
-std::shared_ptr<student> Deque::peak_top(){
+std::shared_ptr<node> Deque::peak_top(){
     return head;
 
 }
 
-std::shared_ptr<student> Deque::pop_bot(){
+std::shared_ptr<node> Deque::pop_bot(){
     if (tail == nullptr)
     {
         return nullptr;
     }
     
-    std::shared_ptr<student> temp_ptr = tail;
+    std::shared_ptr<node> temp_ptr = tail;
     set_tail(tail->prev);
     if (tail != nullptr)
     {
@@ -90,17 +91,17 @@ std::shared_ptr<student> Deque::pop_bot(){
 
 }
 
-std::shared_ptr<student> Deque::peak_bot(){
+std::shared_ptr<node> Deque::peak_bot(){
     return tail;
 
 }
 
-void Deque::set_head(std::shared_ptr<student> student){
-    head = student;
+void Deque::set_head(std::shared_ptr<node> node){
+    head = node;
     return;
 
 }
-void Deque::set_tail(std::shared_ptr<student> student){
-    tail = student;
+void Deque::set_tail(std::shared_ptr<node> node){
+    tail = node;
     return;
 }

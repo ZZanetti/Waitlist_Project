@@ -1,5 +1,7 @@
 #include "waitlist.h"
-#include "iostream"
+
+
+
 
 waitlist::waitlist(std::string name_of_list)
 {
@@ -21,33 +23,94 @@ int waitlist::get_Size(){
     return list->return_size();
 }
     //void write list to file
-void waitlist::write_to_csv(std::string file_name){}
+void waitlist::write_to_csv(std::string file_name){
+    std::ofstream my_File;
+    my_File.open(file_name);
+    if (my_File.is_open())
+    {
+ 
+    
+    my_File << "Name, Email, Address, \n";
+    std::shared_ptr<node> temp_ptr = list->peak_top();
+    while (temp_ptr != nullptr)
+    {
+        my_File << temp_ptr->stored_string_1 << ",";
+        my_File << temp_ptr->stored_string_2 << ",";
+        my_File << temp_ptr->stored_string_3 << ",\n";
+        temp_ptr = temp_ptr->next;
+
+    }
+    
+    my_File << "end\n";
+    my_File.close();
+    }
+    return;
+    
+
+    
+}
 
 //returns true if list loaded successfully
-bool waitlist::load_list(std::string file_name){}
+bool waitlist::load_list(std::string file_name){
+    init_list();
+    std::ifstream file_to_load;
+    std::string item;
+    std::string name;
+    std::string email;
+    std::string address;
+    int count = 0;
+    file_to_load.open(file_name);
+    if (file_to_load.is_open())
+    {
+        while (std::getline(file_to_load, item, ','))
+        {
+            if (count == 0)
+            {
+                name = item;
+                count++;
+            }
+            else if (count == 1)
+            {
+                email = item;
+                count++;
+            }
+            else
+            {
+                address = item;
+                count = 0;
+                add_student(name, email, address);
+            }
+            
+            
+            
+        }
+        
+    }
+    
+    file_to_load.close();
+}
 
 //prints list line by line to the console
 void waitlist::print_list_to_console(int option1){
-    std::shared_ptr<student> temp_ptr(list->peak_top());
+    std::shared_ptr<node> temp_ptr(list->peak_top());
     while (temp_ptr != nullptr)
     {
         if (option1 == 0)
         {
-            std::cout << temp_ptr->name << ", " << temp_ptr->email << 
-            ", " << temp_ptr->address << std::endl;
+            std::cout << temp_ptr->stored_string_1 << ", " << temp_ptr->stored_string_2 << ", " << temp_ptr->stored_string_3 << std::endl;
             temp_ptr = temp_ptr->next;
             continue;
         }
         else if (option1 == 1)
         {
-            std::cout << temp_ptr->name << ", " << temp_ptr->email << 
+            std::cout << temp_ptr->stored_string_1 << ", " << temp_ptr->stored_string_2 << 
             ", " << std::endl;
             temp_ptr = temp_ptr->next;
             continue;
         }
         else
         {
-            std::cout << temp_ptr->name << std::endl;
+            std::cout << temp_ptr->stored_string_1 << std::endl;
             temp_ptr = temp_ptr->next;
             continue;
         }
@@ -57,22 +120,25 @@ void waitlist::print_list_to_console(int option1){
 }
 
 
-//void new list
+
 
 //void add_student
 void waitlist::add_student(std::string name, std::string email, std::string address){
-    std::shared_ptr<student> new_student(list->init_stud(name, email, address));
-    list->add_student_deque(new_student);
+    std::shared_ptr<node> new_student(list->init_node(name, email, address));
+    list->add_node_deque(new_student);
 }
 
 //void find_and_blank_student
-std::shared_ptr<student> waitlist::find_and_blank_student(std::string keyword, int option2, std::string semail, std::string saddress){}
+std::shared_ptr<node> waitlist::find_and_blank_student(std::string keyword, int option2, std::string semail, std::string saddress){}
+
+
+
 //string enroll
 void waitlist::enroll_student(int option3){
     while (option3 > 0)
     {
-        std::shared_ptr<student> temp = list->pop_top();
-        std::cout << temp->name << ", " << temp->email << std::endl;
+        std::shared_ptr<node> temp = list->pop_top();
+        std::cout << temp->stored_string_1 << ", " << temp->stored_string_2 << std::endl;
         option3--;
 
     }
@@ -95,7 +161,7 @@ int waitlist::reduce_Size(int num_to_rm){
     
     while (num_to_rm > 0)
     {
-        std::cout << "removed " << list->pop_bot()->name << std::endl;
+        std::cout << "removed " << list->pop_bot()->stored_string_1 << std::endl;
         num_to_rm--;
     }
     return get_Size();

@@ -2,6 +2,10 @@
 #define WAITLIST__H
 
 #include "deque.h"
+#include <fstream>
+#include <string>
+#include <iostream>
+
 
 
 //enroll_next removes the student at the top of the queue and returns their information
@@ -43,7 +47,7 @@ public:
     //void add_student
     void add_student(std::string name, std::string email, std::string address);
     //void find_and_blank_student
-    std::shared_ptr<student> find_and_blank_student(std::string keyword, int option2 = SEARCH, std::string semail = ".", std::string saddress = ".");
+    std::shared_ptr<node> find_and_blank_student(std::string keyword, int option2 = SEARCH, std::string semail = ".", std::string saddress = ".");
 
     //string enroll
     void enroll_student(int option3 = 1);
