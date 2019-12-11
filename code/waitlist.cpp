@@ -1,7 +1,38 @@
 #include "waitlist.h"
 
 
+enum code {
+       create,
+       load,
+       enroll,
+       size,
+       shrink,
+       search,
+       add,
+       ex,
+       view,
+       hel,
+       none,
+    };
 
+    code hash_it(std::string const& inString) {
+        if (inString == "create") return create;
+        if (inString == "load") return load;
+        if (inString == "enroll") return enroll;
+        if (inString == "size") return size;
+        if (inString == "shrink") return shrink;
+        if (inString == "search") return search;
+        if (inString == "add") return add;
+        if (inString == "view") return view;
+        if (inString == "exit") return ex;
+        if (inString == "help") return hel;
+        
+        else
+        {
+          return none;
+        }
+
+    }
 
 waitlist::waitlist(std::string name_of_list)
 {
@@ -90,10 +121,11 @@ bool waitlist::load_list(std::string file_name){
             
             
         }
-        
+    file_to_load.close();
+    return true;
     }
     
-    file_to_load.close();
+    return false;
 }
 
 //prints list line by line to the console
@@ -136,39 +168,102 @@ void waitlist::add_student(std::string name, std::string email, std::string addr
 
 //void find_and_blank_student
 void waitlist::interact(){
-/*
-bool still_there = true;
-  std::string com;
-  while (still_there)
-  {
-std::cin >> com;
 
-  std::cout << "your input was '" << com << "'" << std::endl;
-
-  switch (hashit(com))
-  {
-  case help:
-    std::cout << "commands are 'help' 'create' 'edit' 'exit'" << std::endl;
-    break;
-  case create:
-    std::cout << "Creating a new list!" << std::endl;
-    //this will take you to the waitlist functions, which will have their own switch with commands like add, enroll, shrink_list
+    bool still_there = true;
+    std::string com;
     
-    break;
-  case edit:
-    std::cout << "Please enter the name of the CSV file with quotations" << std::endl;
-    break;
-  case ex:
-    std::cout << "Goodbye!" << std::endl;
-    still_there = false;
-    break;
-  
-  default:
-    std::cout << "You need to enter a valid command" << std::endl;
-    break;
-  }}
-*/
-return;
+    while (still_there){
+
+    std::cout << "please enter a command" << std::endl;
+    std::cin >> com;
+
+    std::cout << "your input was '" << com << "'" << std::endl;
+
+      switch (hash_it(com))
+      {
+        case create:{
+        std::string user_list_name;
+        std::cout << "Please enter the name of the list" << std::endl;
+        std::cin >> user_list_name;
+        list_name = user_list_name;
+        //name a new list and return to the menu
+        break;
+        }
+
+        case load:
+        std::cout << "commands are 'help' 'create' 'edit' 'exit'" << std::endl;
+        break;
+
+        case enroll:
+        std::cout << "the following student has been removed from the top of the list...." << std::endl;
+        enroll_student();
+        //enrolls a student
+        break;
+
+        case size:
+        std::cout << "the size of the list is " << size << std::endl;
+        //return the size of the current list or 0
+        break;
+
+        case shrink:{
+        std::string number_to_del;
+        std::cout << "Your list is " << size << " students long" << std::endl;
+        std::cout << "Please enter the number of students to remove" << std::endl;
+        std::cin >> number_to_del;
+        
+        reduce_Size(std::stoi(number_to_del));
+        //reduce the size of the current list by a select amount
+        break;}
+
+        case search:
+        //find a student and delete if wanted 
+        // either prints "not found..." or "found, do you want to delete? Y/N"
+        std::cout << "Please enter the name of the CSV file with quotations" << std::endl;
+        break;
+
+        case add:{
+        std::string name, email, address, optional;
+        bool keep_going = true;
+        while (keep_going)
+            {
+            std::cout << "Please enter the name of the student" << std::endl;
+            std::cin >> name;
+            std::cout << "Please enter the email of the student" << std::endl;
+            std::cin >> email;
+            std::cout << "Please enter the address of the student" << std::endl;
+            std::cin >> address;
+            add_student(name, email, address);
+            std::cout << "Add another student? ('Y'/'N')" << std::endl;
+            std::cin >>optional;
+            if (optional == "N")
+            {
+                keep_going = false;
+            }
+            }
+        break;
+        }
+
+        case view:
+        print_list_to_console();
+        break;
+
+        case ex:
+        std::cout << "Goodbye!" << std::endl;
+        still_there = false;
+        break;
+
+        case hel:
+        std::cout << "create, load, enroll, size, shrink, search, add, view, exit, help" << std::endl;
+        break;
+    
+      default:
+        std::cout << "You need to enter a valid command. Type 'help' for a list of commands" << std::endl;
+        break;
+      }
+
+    }
+    
+    return;
 }
 
 
