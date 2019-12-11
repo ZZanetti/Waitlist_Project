@@ -174,10 +174,10 @@ void waitlist::interact(){
     
     while (still_there){
 
-    std::cout << "please enter a command" << std::endl;
+    std::cout << "Please enter a command!" << std::endl;
     std::cin >> com;
 
-    std::cout << "your input was '" << com << "'" << std::endl;
+    std::cout << "Your input was '" << com << "'" << std::endl;
 
       switch (hash_it(com))
       {
@@ -186,17 +186,37 @@ void waitlist::interact(){
         std::cout << "Please enter the name of the list" << std::endl;
         std::cin >> user_list_name;
         list_name = user_list_name;
-        //name a new list and return to the menu
+        std::this_thread::sleep_for (std::chrono::seconds(1));
+        std::cout << "Done." << std::endl;
         break;
         }
 
-        case load:
-        std::cout << "commands are 'help' 'create' 'edit' 'exit'" << std::endl;
-        break;
+        case load:{
+        std::string user_list_name2;
+        std::cout << "Please enter the name of the list" << std::endl;
+        std::cin >> user_list_name2;
+        std::cout << "trying to load " << user_list_name2 << std::endl;
+        std::this_thread::sleep_for (std::chrono::seconds(1));
+        
+        if (load_list(user_list_name2))
+        {
+            print_list_to_console();
+            std::cout << "Done." << std::endl;
+        }
+        else
+        {
+            std::cout << "Failed to load list...(not found or error)" << std::endl;
+        }
+        
+        break;    
+        }
+        
+        
 
         case enroll:
         std::cout << "the following student has been removed from the top of the list...." << std::endl;
         enroll_student();
+        std::cout << "Done." << std::endl;
         //enrolls a student
         break;
 
@@ -210,9 +230,12 @@ void waitlist::interact(){
         std::cout << "Your list is " << size << " students long" << std::endl;
         std::cout << "Please enter the number of students to remove" << std::endl;
         std::cin >> number_to_del;
+        std::this_thread::sleep_for (std::chrono::seconds(1));
         
         reduce_Size(std::stoi(number_to_del));
         //reduce the size of the current list by a select amount
+        std::cout << "the size of the list is now " << size << std::endl;
+        std::cout << "Done." << std::endl;
         break;}
 
         case search:
@@ -296,7 +319,7 @@ int waitlist::reduce_Size(int num_to_rm){
     
     while (num_to_rm > 0)
     {
-        std::cout << "removed " << list->pop_bot()->stored_string_1 << std::endl;
+        std::cout << "Removed " << list->pop_bot()->stored_string_1 << std::endl;
         num_to_rm--;
     }
     return get_Size();
