@@ -174,7 +174,7 @@ void waitlist::interact(){
     
     while (still_there){
 
-    std::cout << "Please enter a command!" << std::endl;
+    std::cout << "Please enter a command! ('help' for help, 'exit' to exit)" << std::endl;
     std::cin >> com;
 
     std::cout << "Your input was '" << com << "'" << std::endl;
@@ -183,11 +183,10 @@ void waitlist::interact(){
       {
         case create:{
         std::string user_list_name;
-        std::cout << "Please enter the name of the list" << std::endl;
+        std::cout << "Please enter the name of the list ending in .csv" << std::endl;
         std::cin >> user_list_name;
         list_name = user_list_name;
-        std::this_thread::sleep_for (std::chrono::seconds(1));
-        std::cout << "Done." << std::endl;
+        std::cout << "Done. You are now modifying " << user_list_name << "\n" << std::endl;
         break;
         }
 
@@ -201,11 +200,11 @@ void waitlist::interact(){
         if (load_list(user_list_name2))
         {
             print_list_to_console();
-            std::cout << "Done." << std::endl;
+            std::cout << "Done." << "\n" << std::endl;
         }
         else
         {
-            std::cout << "Failed to load list...(not found or error)" << std::endl;
+            std::cout << "Failed to load list...(not found or error)" << "\n" << std::endl;
         }
         
         break;    
@@ -216,26 +215,26 @@ void waitlist::interact(){
         case enroll:
         std::cout << "the following student has been removed from the top of the list...." << std::endl;
         enroll_student();
-        std::cout << "Done." << std::endl;
+        std::cout << "Done." << "\n" << std::endl;
         //enrolls a student
         break;
 
         case size:
-        std::cout << "the size of the list is " << size << std::endl;
+        std::cout << "the size of the list is " << get_Size() << "\n" << std::endl;
         //return the size of the current list or 0
         break;
 
         case shrink:{
         std::string number_to_del;
-        std::cout << "Your list is " << size << " students long" << std::endl;
+        std::cout << "Your list is " << get_Size() << " students long" << std::endl;
         std::cout << "Please enter the number of students to remove" << std::endl;
         std::cin >> number_to_del;
         std::this_thread::sleep_for (std::chrono::seconds(1));
         
         reduce_Size(std::stoi(number_to_del));
         //reduce the size of the current list by a select amount
-        std::cout << "the size of the list is now " << size << std::endl;
-        std::cout << "Done." << std::endl;
+        std::cout << "the size of the list is now " << get_Size() << std::endl;
+        std::cout << "Done." << "\n" << std::endl;
         break;}
 
         case search:
@@ -256,9 +255,9 @@ void waitlist::interact(){
             std::cout << "Please enter the address of the student" << std::endl;
             std::cin >> address;
             add_student(name, email, address);
-            std::cout << "Add another student? ('Y'/'N')" << std::endl;
+            std::cout << "Enter 'y' to keep adding, or type 'no' / 'N' to stop" << std::endl;
             std::cin >>optional;
-            if (optional == "N")
+            if (optional == "N" || optional == "no")
             {
                 keep_going = false;
             }
@@ -267,7 +266,9 @@ void waitlist::interact(){
         }
 
         case view:
+        std::cout << "Printing list to console....\n";
         print_list_to_console();
+        std::cout << "\n";
         break;
 
         case ex:
@@ -276,7 +277,16 @@ void waitlist::interact(){
         break;
 
         case hel:
-        std::cout << "create, load, enroll, size, shrink, search, add, view, exit, help" << std::endl;
+        std::cout << "type 'create' to make a new list and name it" << std::endl;
+        std::cout << "type 'load' to load an existing list" << std::endl;
+        std::cout << "type 'add' to add student(s) to the list" << std::endl;
+        std::cout << "type 'view' to view the current list" << std::endl;
+        std::cout << "type 'enroll' to remove the student at the top of the current list" 
+                     "and return his or her information" << std::endl;
+        std::cout << "type 'size' to return the size of the current list" << std::endl;
+        std::cout << "type 'shrink' to shrink the current list by removing students at the end first" << std::endl;
+        std::cout << "type 'search' to search for a student" << std::endl;
+        
         break;
     
       default:
@@ -321,6 +331,7 @@ int waitlist::reduce_Size(int num_to_rm){
     {
         std::cout << "Removed " << list->pop_bot()->stored_string_1 << std::endl;
         num_to_rm--;
+
     }
     return get_Size();
 }

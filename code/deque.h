@@ -59,6 +59,8 @@ public:
 	void set_head(std::shared_ptr<node> node);
 
 	void set_tail(std::shared_ptr<node> node);
+
+	void reduce_size();
 	
 
 

@@ -105,3 +105,8 @@ void Deque::set_tail(std::shared_ptr<node> node){
     tail = node;
     return;
 }
+
+void Deque::reduce_size(){
+    size--;
+    return;
+}
