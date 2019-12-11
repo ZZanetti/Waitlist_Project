@@ -8,17 +8,6 @@
 
 
 
-//enroll_next removes the student at the top of the queue and returns their information
-
-//add_student adds a student
-
-//search for student by given string
-
-#define SEARCH 0
-#define REMOVE 1
-#define PRIORITIZE 2
-//shrink_list(int) removes the last x students from the queue. 
-
 
 class waitlist
 {
@@ -47,7 +36,7 @@ public:
     //void add_student
     void add_student(std::string name, std::string email, std::string address);
     //void find_and_blank_student
-    std::shared_ptr<node> find_and_blank_student(std::string keyword, int option2 = SEARCH, std::string semail = ".", std::string saddress = ".");
+    void interact();
 
     //string enroll
     void enroll_student(int option3 = 1);

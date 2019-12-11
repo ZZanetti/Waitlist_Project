@@ -30,18 +30,23 @@ void waitlist::write_to_csv(std::string file_name){
     {
  
     
-    my_File << "Name, Email, Address, \n";
+    
     std::shared_ptr<node> temp_ptr = list->peak_top();
+    if (temp_ptr->stored_string_1 != "Name")
+    {
+        my_File << "Name,Email,Address,";
+    }
+    
     while (temp_ptr != nullptr)
     {
         my_File << temp_ptr->stored_string_1 << ",";
         my_File << temp_ptr->stored_string_2 << ",";
-        my_File << temp_ptr->stored_string_3 << ",\n";
+        my_File << temp_ptr->stored_string_3 << ",";
         temp_ptr = temp_ptr->next;
 
     }
     
-    my_File << "end\n";
+    //my_File << "end\n";
     my_File.close();
     }
     return;
@@ -66,6 +71,7 @@ bool waitlist::load_list(std::string file_name){
         {
             if (count == 0)
             {
+                
                 name = item;
                 count++;
             }
@@ -129,7 +135,41 @@ void waitlist::add_student(std::string name, std::string email, std::string addr
 }
 
 //void find_and_blank_student
-std::shared_ptr<node> waitlist::find_and_blank_student(std::string keyword, int option2, std::string semail, std::string saddress){}
+void waitlist::interact(){
+/*
+bool still_there = true;
+  std::string com;
+  while (still_there)
+  {
+std::cin >> com;
+
+  std::cout << "your input was '" << com << "'" << std::endl;
+
+  switch (hashit(com))
+  {
+  case help:
+    std::cout << "commands are 'help' 'create' 'edit' 'exit'" << std::endl;
+    break;
+  case create:
+    std::cout << "Creating a new list!" << std::endl;
+    //this will take you to the waitlist functions, which will have their own switch with commands like add, enroll, shrink_list
+    
+    break;
+  case edit:
+    std::cout << "Please enter the name of the CSV file with quotations" << std::endl;
+    break;
+  case ex:
+    std::cout << "Goodbye!" << std::endl;
+    still_there = false;
+    break;
+  
+  default:
+    std::cout << "You need to enter a valid command" << std::endl;
+    break;
+  }}
+*/
+return;
+}
 
 
 

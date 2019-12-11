@@ -27,7 +27,7 @@ string_code hashit (std::string const& inString) {
 int main()
 {
   //debug
-  
+  /*
   Deque q;
   std::cout << q.return_size() << std::endl;
   std::shared_ptr<node> bob(q.init_node("bob", "bobber@aol.com", "123 duh st"));
@@ -49,7 +49,7 @@ int main()
   std::cout << q.peak_bot()->stored_string_1 << std::endl;
   std::cout << (q.pop_top())->stored_string_1 << std::endl;
   std::cout << q.peak_top()->stored_string_1 << std::endl << std::endl;  
-
+  */
   std::cout<< "waitlist section of debug" << std::endl << std::endl;
 
   waitlist w;
@@ -89,10 +89,15 @@ int main()
   w.write_to_csv("test.csv");
   std::cout << "testing load and print....." << std::endl;
   w.load_list("test.csv");
-  w.print_list_to_console(3);
+  w.print_list_to_console();
+  w.write_to_csv("test.csv");
+  //w.load_list("test.csv");
+  //w.print_list_to_console();
+
 
   
   //debug
+  /*
   std::cout << "Hello and welcome to the waitlist application! A c++ program to build and edit waitlists all from the command line!" << std::endl;
   std::cout << "For a list of commands please type 'help', type 'exit' to exit" << std::endl;
   bool still_there = true;
@@ -130,5 +135,6 @@ int main()
     break;
   }
   }
+  */
   return 0;
 }
