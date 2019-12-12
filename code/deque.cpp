@@ -98,18 +98,27 @@ std::shared_ptr<node> Deque::peak_bot(){
 
 void Deque::set_head(std::shared_ptr<node> node){
     head = node;
+    if (node == nullptr)
+    {
+        return;
+    }
     node->prev = nullptr;
     return;
 
 }
 void Deque::set_tail(std::shared_ptr<node> node){
     tail = node;
+    if (node == nullptr)
+    {
+        return;
+    }
+    
     node->next = nullptr;
     return;
 }
 
 void Deque::reduce_size(){
-    size--;
+    size = 0;
     return;
 }
 

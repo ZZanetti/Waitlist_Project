@@ -1,0 +1,45 @@
+WARNING: PLEASE READ THE README.MD BEFORE THIS FILE
+
+Once you have the program running as instructed in the readme.md file. Use the following guide to test the program. 
+
+Be sure to follow step by step if you wish to test the entire program. 
+$example means type 'example' in the console and press enter (case sensitive).
+
+Start:
+1. $help
+2. verify a list of commands is printed to the console
+3. $size
+4. verify 0 printed 
+5. $load
+6. $test1.csv
+7. verify a list loaded and printed
+8. $size
+9. verify size is 5
+10. $admit
+11. verify Bob, bob@aol.com returned.
+12. $size
+13. verify size is 4
+14. $shrink
+15. $1
+16. $size
+17. verify size is 3
+18. $search
+19. $Fred
+20. verify fred was found
+21. $Y
+22. $view
+23. verify Fred is removed and list is 2 lines long
+24. $add
+25. follow the directions to add a student or students to the list
+26. $view to make sure they are added properly
+27. $save
+28. $testsave.csv
+29. $exit
+30. check the csv in the csv folder, does it contain your lists data?
+31. $./main
+32. $load
+33. $testsave.csv
+34. verify its your list.
+
+
+DONE!

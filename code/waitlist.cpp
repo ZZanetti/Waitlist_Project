@@ -4,7 +4,7 @@
 enum code {
        save,
        load,
-       enroll,
+       admit,
        size,
        shrink,
        search,
@@ -12,13 +12,14 @@ enum code {
        ex,
        view,
        hel,
+       newlist,
        none,
     };
 
     code hash_it(std::string const& inString) {
         if (inString == "save") return save;
         if (inString == "load") return load;
-        if (inString == "enroll") return enroll;
+        if (inString == "admit") return admit;
         if (inString == "size") return size;
         if (inString == "shrink") return shrink;
         if (inString == "search") return search;
@@ -26,6 +27,7 @@ enum code {
         if (inString == "view") return view;
         if (inString == "exit") return ex;
         if (inString == "help") return hel;
+        if (inString == "new") return newlist;
         
         else
         {
@@ -56,7 +58,7 @@ int waitlist::get_Size(){
     //void write list to file
 void waitlist::write_to_csv(std::string file_name){
     std::ofstream my_File;
-    my_File.open(file_name);
+    my_File.open("../lists_CSV/" + file_name);
     if (my_File.is_open())
     {
  
@@ -90,9 +92,9 @@ bool waitlist::load_list(std::string file_name){
     std::string item;
     std::string name;
     std::string email;
-    std::string address;
+    std::string state;
     int count = 0;
-    file_to_load.open(file_name);
+    file_to_load.open("../lists_CSV/" + file_name);
     if (file_to_load.is_open())
     {
         while (std::getline(file_to_load, item, ','))
@@ -110,9 +112,9 @@ bool waitlist::load_list(std::string file_name){
             }
             else
             {
-                address = item;
+                state = item;
                 count = 0;
-                add_student(name, email, address);
+                add_student(name, email, state);
             }
             
             
@@ -158,16 +160,16 @@ void waitlist::print_list_to_console(int option1){
 
 
 //void add_student
-void waitlist::add_student(std::string name, std::string email, std::string address){
-    std::shared_ptr<node> new_student(list->init_node(name, email, address));
+void waitlist::add_student(std::string name, std::string email, std::string state){
+    std::shared_ptr<node> new_student(list->init_node(name, email, state));
     list->add_node_deque(new_student);
 }
 
 
 
 
-//string enroll
-void waitlist::enroll_student(int option3){
+//string admit
+void waitlist::admit_student(int option3){
     while (option3 > 0)
     {
         std::shared_ptr<node> temp = list->pop_top();
@@ -247,7 +249,7 @@ void waitlist::interact(){
         std::cout << "Please enter the name of the list" << std::endl;
         std::cin >> user_list_name2;
         std::cout << "trying to load " << user_list_name2 << std::endl;
-        std::this_thread::sleep_for (std::chrono::seconds(1));
+        std::this_thread::sleep_for (std::chrono::milliseconds(200));
         
         if (load_list(user_list_name2))
         {
@@ -264,11 +266,11 @@ void waitlist::interact(){
         
         
 
-        case enroll:
+        case admit:
         std::cout << "the following student has been removed from the top of the list...." << std::endl;
-        enroll_student();
+        admit_student();
         std::cout << "Done." << "\n" << std::endl;
-        //enrolls a student
+        //admits a student
         break;
 
         case size:
@@ -281,7 +283,7 @@ void waitlist::interact(){
         std::cout << "Your list is " << get_Size() << " students long" << std::endl;
         std::cout << "Please enter the number of students to remove" << std::endl;
         std::cin >> number_to_del;
-        std::this_thread::sleep_for (std::chrono::seconds(1));
+        std::this_thread::sleep_for (std::chrono::milliseconds(200));
         
         reduce_Size(std::stoi(number_to_del));
         //reduce the size of the current list by a select amount
@@ -291,10 +293,10 @@ void waitlist::interact(){
 
         case search:{
             std::string search_term;
-            std::cout << "Please enter the name, email, or address of the student (case sensitive)" << std::endl;
+            std::cout << "Please enter the name, email, or state of the student (case sensitive)" << std::endl;
             std::cin >> search_term;
             std::cout << "Searching..." << std::endl;
-            std::this_thread::sleep_for (std::chrono::seconds(1));
+            std::this_thread::sleep_for (std::chrono::milliseconds(200));
             std::shared_ptr<node> if_found_ptr(search_list(search_term));
             if (if_found_ptr == nullptr)
             {
@@ -305,7 +307,7 @@ void waitlist::interact(){
                 std::cout << "Record of " << search_term << " found." << std::endl;
                 std::cout << "Name: " << if_found_ptr->stored_string_1 << std::endl;
                 std::cout << "Email: " << if_found_ptr->stored_string_2 << std::endl;
-                std::cout << "Address: " << if_found_ptr->stored_string_3 << std::endl;
+                std::cout << "state: " << if_found_ptr->stored_string_3 << std::endl;
                 std::string decision;
                 std::cout << "Would you like to remove this student from the list? ('Y' or 'N')" << std::endl;
                 std::cin >> decision;
@@ -326,7 +328,7 @@ void waitlist::interact(){
         
 
         case add:{
-        std::string name, email, address, optional;
+        std::string name, email, state, optional;
         bool keep_going = true;
         while (keep_going)
             {
@@ -334,15 +336,17 @@ void waitlist::interact(){
             std::cin >> name;
             std::cout << "Please enter the email of the student" << std::endl;
             std::cin >> email;
-            std::cout << "Please enter the address of the student" << std::endl;
-            std::cin >> address;
-            add_student(name, email, address);
+            std::cout << "Please enter the state of the student" << std::endl;
+            std::cin >> state;
+            add_student(name, email, state);
             std::cout << "Enter 'y' to keep adding, or type 'no' / 'N' to stop" << std::endl;
             std::cin >>optional;
+            
             if (optional == "N" || optional == "no")
             {
                 keep_going = false;
             }
+            std::this_thread::sleep_for (std::chrono::milliseconds(200));
             }
         break;
         }
@@ -359,18 +363,28 @@ void waitlist::interact(){
         break;
 
         case hel:
+        
         std::cout << "type 'load' to load an existing list" << std::endl;
         std::cout << "type 'add' to add student(s) to the list" << std::endl;
         std::cout << "type 'view' to view the current list" << std::endl;
-        std::cout << "type 'enroll' to remove the student at the top of the current list" 
+        std::cout << "type 'admit' to remove the student at the top of the current list" 
                      "and return his or her information" << std::endl;
         std::cout << "type 'size' to return the size of the current list" << std::endl;
         std::cout << "type 'shrink' to shrink the current list by removing students at the end first" << std::endl;
         std::cout << "type 'search' to search for a student" << std::endl;
         std::cout << "type 'save' to write your list to the file and name it" << std::endl;
+        std::cout << "type 'new' to clear the current list and start with a fresh one" << std::endl;
         
         break;
-    
+        case newlist:{
+            list->set_head(nullptr);
+            list->set_tail(nullptr);
+            list->reduce_size();
+            
+            break;
+        }
+        
+
       default:
         std::cout << "You need to enter a valid command. Type 'help' for a list of commands" << std::endl;
         break;

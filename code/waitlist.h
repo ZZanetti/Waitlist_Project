@@ -39,8 +39,8 @@ public:
     void add_student(std::string name, std::string email, std::string address);
    
 
-    //string enroll
-    void enroll_student(int option3 = 1);
+    //string admit
+    void admit_student(int option3 = 1);
     
 
     //removes the last x elements of the list and returns the size
