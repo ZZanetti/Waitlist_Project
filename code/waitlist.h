@@ -37,8 +37,7 @@ public:
     
     //void add_student
     void add_student(std::string name, std::string email, std::string address);
-    //void find_and_blank_student
-    void interact();
+   
 
     //string enroll
     void enroll_student(int option3 = 1);
@@ -46,7 +45,12 @@ public:
 
     //removes the last x elements of the list and returns the size
     int reduce_Size(int num_to_rm);
-    
+
+    //searches the list for the keyword, returns student if found
+    std::shared_ptr<node> search_list(std::string keyword);
+
+     //used to interact with the list via the console
+    void interact();
 };
 
 

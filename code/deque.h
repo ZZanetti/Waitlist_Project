@@ -61,6 +61,8 @@ public:
 	void set_tail(std::shared_ptr<node> node);
 
 	void reduce_size();
+
+	bool remove_node(std::shared_ptr<node> node);
 	
 
 

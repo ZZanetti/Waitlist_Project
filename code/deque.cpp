@@ -98,15 +98,45 @@ std::shared_ptr<node> Deque::peak_bot(){
 
 void Deque::set_head(std::shared_ptr<node> node){
     head = node;
+    node->prev = nullptr;
     return;
 
 }
 void Deque::set_tail(std::shared_ptr<node> node){
     tail = node;
+    node->next = nullptr;
     return;
 }
 
 void Deque::reduce_size(){
     size--;
     return;
+}
+
+bool Deque::remove_node(std::shared_ptr<node> node_to_delete){
+    std::shared_ptr<node> temp_ptr_1;
+    std::shared_ptr<node> temp_ptr_2;
+
+    if (peak_top() == node_to_delete)
+    {
+        set_head(node_to_delete->next);
+        return true;
+    }
+    else if (peak_bot() == node_to_delete)
+    {
+        set_tail(node_to_delete->prev);
+        return true;
+    }
+    else
+    {
+        temp_ptr_1 = node_to_delete->prev;
+        temp_ptr_2 = node_to_delete->next;
+        temp_ptr_1->next = temp_ptr_2;
+        temp_ptr_2->prev = temp_ptr_1;
+        return true;
+    }
+    
+    return true;
+    
+    
 }

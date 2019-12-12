@@ -2,7 +2,7 @@
 
 
 enum code {
-       create,
+       save,
        load,
        enroll,
        size,
@@ -16,7 +16,7 @@ enum code {
     };
 
     code hash_it(std::string const& inString) {
-        if (inString == "create") return create;
+        if (inString == "save") return save;
         if (inString == "load") return load;
         if (inString == "enroll") return enroll;
         if (inString == "size") return size;
@@ -63,10 +63,7 @@ void waitlist::write_to_csv(std::string file_name){
     
     
     std::shared_ptr<node> temp_ptr = list->peak_top();
-    if (temp_ptr->stored_string_1 != "Name")
-    {
-        my_File << "Name,Email,Address,";
-    }
+    
     
     while (temp_ptr != nullptr)
     {
@@ -166,7 +163,61 @@ void waitlist::add_student(std::string name, std::string email, std::string addr
     list->add_node_deque(new_student);
 }
 
-//void find_and_blank_student
+
+
+
+//string enroll
+void waitlist::enroll_student(int option3){
+    while (option3 > 0)
+    {
+        std::shared_ptr<node> temp = list->pop_top();
+        std::cout << temp->stored_string_1 << ", " << temp->stored_string_2 << std::endl;
+        option3--;
+
+    }
+    
+}
+
+//removes the last x elements of the list and returns the size
+int waitlist::reduce_Size(int num_to_rm){
+    if (list->peak_bot() == nullptr)
+    {
+        std::cout << "list is empty" << std::endl;
+        return 0;
+    }
+    
+    if ((get_Size() - num_to_rm) < 0)
+    {
+        init_list();
+        return 0;
+    }
+    
+    while (num_to_rm > 0)
+    {
+        std::cout << "Removed " << list->pop_bot()->stored_string_1 << std::endl;
+        num_to_rm--;
+
+    }
+    return get_Size();
+}
+
+std::shared_ptr<node> waitlist::search_list(std::string keyword){
+    std::shared_ptr<node> temporary_ptr(list->peak_top());
+
+    while (temporary_ptr != nullptr){
+        if (keyword == temporary_ptr->stored_string_1 || keyword == temporary_ptr->stored_string_2 || keyword == temporary_ptr->stored_string_3)
+        {
+            return temporary_ptr;
+        }
+        temporary_ptr = temporary_ptr->next;
+    }
+    return nullptr;
+}
+
+
+
+
+
 void waitlist::interact(){
 
     bool still_there = true;
@@ -181,12 +232,13 @@ void waitlist::interact(){
 
       switch (hash_it(com))
       {
-        case create:{
+        case save:{
         std::string user_list_name;
         std::cout << "Please enter the name of the list ending in .csv" << std::endl;
         std::cin >> user_list_name;
         list_name = user_list_name;
-        std::cout << "Done. You are now modifying " << user_list_name << "\n" << std::endl;
+        write_to_csv(user_list_name);
+        std::cout << "Done. Saved " << user_list_name << ".\n" << std::endl;
         break;
         }
 
@@ -237,11 +289,41 @@ void waitlist::interact(){
         std::cout << "Done." << "\n" << std::endl;
         break;}
 
-        case search:
+        case search:{
+            std::string search_term;
+            std::cout << "Please enter the name, email, or address of the student (case sensitive)" << std::endl;
+            std::cin >> search_term;
+            std::cout << "Searching..." << std::endl;
+            std::this_thread::sleep_for (std::chrono::seconds(1));
+            std::shared_ptr<node> if_found_ptr(search_list(search_term));
+            if (if_found_ptr == nullptr)
+            {
+                std::cout << "Not found, returning to menu. Type 'view' to view the list in the console" << std::endl;
+            }
+            else
+            {
+                std::cout << "Record of " << search_term << " found." << std::endl;
+                std::cout << "Name: " << if_found_ptr->stored_string_1 << std::endl;
+                std::cout << "Email: " << if_found_ptr->stored_string_2 << std::endl;
+                std::cout << "Address: " << if_found_ptr->stored_string_3 << std::endl;
+                std::string decision;
+                std::cout << "Would you like to remove this student from the list? ('Y' or 'N')" << std::endl;
+                std::cin >> decision;
+                if (decision == "Y")
+                {
+                    list->remove_node(if_found_ptr);
+                    std::cout << "Removed." << std::endl;
+                }
+                break;
+            }
+            
+            
+
+        break;
+        }
         //find a student and delete if wanted 
         // either prints "not found..." or "found, do you want to delete? Y/N"
-        std::cout << "Please enter the name of the CSV file with quotations" << std::endl;
-        break;
+        
 
         case add:{
         std::string name, email, address, optional;
@@ -277,7 +359,6 @@ void waitlist::interact(){
         break;
 
         case hel:
-        std::cout << "type 'create' to make a new list and name it" << std::endl;
         std::cout << "type 'load' to load an existing list" << std::endl;
         std::cout << "type 'add' to add student(s) to the list" << std::endl;
         std::cout << "type 'view' to view the current list" << std::endl;
@@ -286,6 +367,7 @@ void waitlist::interact(){
         std::cout << "type 'size' to return the size of the current list" << std::endl;
         std::cout << "type 'shrink' to shrink the current list by removing students at the end first" << std::endl;
         std::cout << "type 'search' to search for a student" << std::endl;
+        std::cout << "type 'save' to write your list to the file and name it" << std::endl;
         
         break;
     
@@ -297,41 +379,4 @@ void waitlist::interact(){
     }
     
     return;
-}
-
-
-
-//string enroll
-void waitlist::enroll_student(int option3){
-    while (option3 > 0)
-    {
-        std::shared_ptr<node> temp = list->pop_top();
-        std::cout << temp->stored_string_1 << ", " << temp->stored_string_2 << std::endl;
-        option3--;
-
-    }
-    
-}
-
-//removes the last x elements of the list and returns the size
-int waitlist::reduce_Size(int num_to_rm){
-    if (list->peak_bot() == nullptr)
-    {
-        std::cout << "list is empty" << std::endl;
-        return 0;
-    }
-    
-    if ((get_Size() - num_to_rm) < 0)
-    {
-        init_list();
-        return 0;
-    }
-    
-    while (num_to_rm > 0)
-    {
-        std::cout << "Removed " << list->pop_bot()->stored_string_1 << std::endl;
-        num_to_rm--;
-
-    }
-    return get_Size();
 }
