@@ -7,7 +7,7 @@ the waitlist has more specific features, whereas the Deque could be used for oth
 applications easily. That is the reason for the separate .h and .cpp files*/
 
 #include <string>
-
+#include <memory>
 
 
 //deque is a doubly linked list made up of nodes that store up to three strings.
